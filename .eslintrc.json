@@ -1,0 +1,12 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": ["airbnb-typescript/base", "plugin:prettier/recommended"],
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-shadow": "warn"
+  }
+}
