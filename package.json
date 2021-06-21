@@ -4,10 +4,12 @@
   "main": "dist/index.html",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/app/index.html",
-    "build": "parcel build src/index.html",
+    "dev": "parcel serve src/app/index.html",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "build": "parcel build src/app/index.html",
     "serve": "serve dist",
-    "lint": "eslint --ext .ts,.tsx ./src"
+    "predeploy": "yarn build --public-url /digital-rain/",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@types/bezier-easing": "^2.1.2",
@@ -20,7 +22,8 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
-    "parcel": "^2.0.0-beta.3.1",
+    "gh-pages": "^3.2.2",
+    "parcel": "^2.0.0-beta.2",
     "prettier": "^2.3.1",
     "prettier-config-airbnb": "^1.0.0"
   },
