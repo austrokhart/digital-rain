@@ -1,12 +1,12 @@
 import Layer from '../../digital-rain/classes/layer';
 
-import { textureSize } from './textures';
+import { spriteSize } from './sprites';
 
 const generateLayer: (props: { seed: string }) => Layer = (props) => {
   const { seed } = props;
 
-  const width = Math.ceil(window.innerWidth / (textureSize.width + 4));
-  const height = Math.ceil(window.innerHeight / textureSize.height);
+  const width = Math.ceil(window.innerWidth / spriteSize.width);
+  const height = Math.ceil(window.innerHeight / (spriteSize.height - 4));
 
   return new Layer({ seed, width, height });
 };

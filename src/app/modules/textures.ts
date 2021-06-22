@@ -8,9 +8,14 @@ type TextureSize = {
   height: number;
 };
 
+const baseTextureSize: TextureSize = {
+  width: 256,
+  height: 256,
+};
+
 const textureSize: TextureSize = {
-  width: 20,
-  height: 20,
+  width: 32,
+  height: 32,
 };
 
 type Textures = { [key: string]: Pixi.Texture };
@@ -19,25 +24,45 @@ const waitForFontToLoad = () => new FontFaceObserver('Noto Mono').load();
 
 const generateTextures: () => Promise<Textures> = () => {
   return waitForFontToLoad().then(() => {
+    const canvas = document.createElement('canvas');
+
+    canvas.width = baseTextureSize.width;
+    canvas.height = baseTextureSize.height;
+
+    const context = canvas.getContext('2d');
+
+    context.shadowColor = '#ffffff';
+    context.shadowBlur = 4;
+    context.font = '700 26px Noto Mono';
+    context.fillStyle = '#ffffff';
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+
+    const baseTexture = Pixi.BaseTexture.from(canvas);
+
     return Object.fromEntries(
-      alphabet.split('').map((character) => {
-        const style = new Pixi.TextStyle({
-          fontFamily: 'Noto Mono',
-          fontSize: textureSize.height,
-          fontWeight: '700',
-          dropShadow: true,
-          dropShadowDistance: 0,
-          dropShadowColor: '#ffffff',
-          dropShadowBlur: 4,
-          dropShadowAlpha: 1,
-          fill: '#ffffff',
-        });
+      alphabet.split('').map((character, index) => {
+        const row = Math.floor(index / (baseTextureSize.width / textureSize.width));
+        const column = index % (baseTextureSize.width / textureSize.width);
 
-        const element = new Pixi.Text(character, style);
+        context.fillText(
+          character,
+          textureSize.width / 2 + column * textureSize.width,
+          textureSize.height / 2 + row * textureSize.height,
+          textureSize.width,
+        );
 
-        element.updateText(true);
+        const texture = new Pixi.Texture(
+          baseTexture,
+          new Pixi.Rectangle(
+            column * textureSize.width,
+            row * textureSize.height,
+            textureSize.width,
+            textureSize.height,
+          ),
+        );
 
-        return [character, element.texture];
+        return [character, texture];
       }),
     );
   });

@@ -1,7 +1,12 @@
 import * as Pixi from 'pixi.js';
 
 import Element from '../../digital-rain/classes/element';
-import { Textures, textureSize } from './textures';
+import { Textures } from './textures';
+
+const spriteSize = {
+  width: 24,
+  height: 24,
+};
 
 type Sprites = Pixi.Sprite[][];
 
@@ -12,9 +17,10 @@ const generateSprites: (props: { width: number; height: number }) => Sprites = (
     return Array.from(Array(width).keys()).map((columnIndex) => {
       const sprite = new Pixi.Sprite();
 
-      sprite.x = Math.floor(textureSize.width / 2) + (textureSize.width + 4) * columnIndex;
-      sprite.y = Math.floor(textureSize.height / 2) + textureSize.height * rowIndex;
-      sprite.anchor.set(0.5);
+      sprite.width = spriteSize.width;
+      sprite.height = spriteSize.height;
+      sprite.x = spriteSize.width * columnIndex;
+      sprite.y = (spriteSize.height - 4) * rowIndex;
 
       return sprite;
     });
@@ -57,4 +63,4 @@ const generateSpriteProps: (props: {
 };
 
 export type { Sprites };
-export { generateSprites, generateSpriteProps };
+export { spriteSize, generateSprites, generateSpriteProps };
