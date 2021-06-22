@@ -1,4 +1,4 @@
-import seedRandom from 'seed-random';
+import random from 'seedrandom';
 
 import Stream from './stream';
 import Element from './element';
@@ -6,7 +6,7 @@ import Element from './element';
 class Layer {
   static streamTimeOffsetDistribution = (x: number) => x; /* linear */
 
-  prng: () => number;
+  generator: () => number;
 
   size: {
     width: number;
@@ -26,7 +26,7 @@ class Layer {
   constructor(props: { seed: string; width: number; height: number }) {
     const { seed, width, height } = props;
 
-    this.prng = seedRandom(seed);
+    this.generator = random(seed);
 
     this.size = {
       width,
@@ -55,13 +55,15 @@ class Layer {
         const timeOffset = Math.abs(
           commonTimeOffset +
             Math.floor(
-              (-0.5 + Layer.streamTimeOffsetDistribution(this.prng())) * 0.6 * this.size.height,
+              (-0.5 + Layer.streamTimeOffsetDistribution(this.generator())) *
+                0.6 *
+                this.size.height,
             ),
         );
 
         const position = index;
 
-        const seed = String(this.prng());
+        const seed = String(this.generator());
         const size = this.size.height;
 
         const instance = new Stream({ seed, size });

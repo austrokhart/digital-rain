@@ -1,4 +1,4 @@
-import seedRandom from 'seed-random';
+import random from 'seedrandom';
 import bezierEasing from 'bezier-easing';
 
 import Character from './character';
@@ -11,7 +11,7 @@ class Stream {
 
   static tailOpacityDistribution = bezierEasing(0.61, 1, 0.88, 1); /* easeOutSine */
 
-  prng: () => number;
+  generator: () => number;
 
   size: number;
 
@@ -28,7 +28,7 @@ class Stream {
   constructor(props: { seed: string; size: number }) {
     const { seed, size } = props;
 
-    this.prng = seedRandom(seed);
+    this.generator = random(seed);
     this.size = size;
 
     this.generateVisibleSize();
@@ -37,11 +37,11 @@ class Stream {
 
   generateVisibleSize() {
     const full = Math.floor(
-      Math.max(8, Stream.visibleFullSizeDistribution(this.prng()) * this.size),
+      Math.max(8, Stream.visibleFullSizeDistribution(this.generator()) * this.size),
     );
 
     const body = Math.floor(
-      Math.max(4, Stream.visibleBodySizeDistribution(this.prng()) * 0.75 * full),
+      Math.max(4, Stream.visibleBodySizeDistribution(this.generator()) * 0.75 * full),
     );
 
     this.visibleSize = {
@@ -54,8 +54,7 @@ class Stream {
     const characters = Array.from(Array(this.size).keys()).map((i) => {
       const timeOffset = i;
 
-      const seed = String(this.prng());
-      const instance = new Character({ seed });
+      const instance = new Character({ generator: this.generator });
 
       return {
         timeOffset,
