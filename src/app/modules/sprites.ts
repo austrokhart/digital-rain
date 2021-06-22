@@ -10,12 +10,14 @@ const spriteSize = {
 
 type Sprites = Pixi.Sprite[][];
 
-const generateSprites: (props: { width: number; height: number }) => Sprites = (props) => {
-  const { width, height } = props;
+const generateSprites: (props: { width: number; height: number; textures: Textures }) => Sprites = (
+  props,
+) => {
+  const { width, height, textures } = props;
 
   return Array.from(Array(height).keys()).map((rowIndex) => {
     return Array.from(Array(width).keys()).map((columnIndex) => {
-      const sprite = new Pixi.Sprite();
+      const sprite = new Pixi.Sprite(textures.void);
 
       sprite.width = spriteSize.width;
       sprite.height = spriteSize.height;
@@ -58,7 +60,7 @@ const generateSpriteProps: (props: {
   }
 
   return {
-    texture: null,
+    texture: textures.void,
   };
 };
 

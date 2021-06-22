@@ -28,14 +28,27 @@ const createApp: (props: { seed: string; textures: Textures }) => {
     autoDensity: true,
   });
 
+  const spriteContainer = new Pixi.ParticleContainer(
+    5000,
+    {
+      tint: true,
+      uvs: true,
+    },
+    undefined,
+    true,
+  );
+
+  app.stage.addChild(spriteContainer);
+
   const sprites = generateSprites({
     width: layer.size.width,
     height: layer.size.height,
+    textures,
   });
 
   sprites.forEach((row) => {
     row.forEach((sprite) => {
-      app.stage.addChild(sprite);
+      spriteContainer.addChild(sprite);
     });
   });
 

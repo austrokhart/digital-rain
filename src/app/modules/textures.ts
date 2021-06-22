@@ -40,31 +40,34 @@ const generateTextures: () => Promise<Textures> = () => {
 
     const baseTexture = Pixi.BaseTexture.from(canvas);
 
-    return Object.fromEntries(
-      alphabet.split('').map((character, index) => {
-        const row = Math.floor(index / (baseTextureSize.width / textureSize.width));
-        const column = index % (baseTextureSize.width / textureSize.width);
+    return {
+      ...Object.fromEntries(
+        alphabet.split('').map((character, index) => {
+          const row = Math.floor(index / (baseTextureSize.width / textureSize.width));
+          const column = index % (baseTextureSize.width / textureSize.width);
 
-        context.fillText(
-          character,
-          textureSize.width / 2 + column * textureSize.width,
-          textureSize.height / 2 + row * textureSize.height,
-          textureSize.width,
-        );
-
-        const texture = new Pixi.Texture(
-          baseTexture,
-          new Pixi.Rectangle(
-            column * textureSize.width,
-            row * textureSize.height,
+          context.fillText(
+            character,
+            textureSize.width / 2 + column * textureSize.width,
+            textureSize.height / 2 + row * textureSize.height,
             textureSize.width,
-            textureSize.height,
-          ),
-        );
+          );
 
-        return [character, texture];
-      }),
-    );
+          const texture = new Pixi.Texture(
+            baseTexture,
+            new Pixi.Rectangle(
+              column * textureSize.width,
+              row * textureSize.height,
+              textureSize.width,
+              textureSize.height,
+            ),
+          );
+
+          return [character, texture];
+        }),
+      ),
+      void: new Pixi.Texture(baseTexture, new Pixi.Rectangle(0, 0, 1, 1)),
+    };
   });
 };
 
